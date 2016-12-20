@@ -1,12 +1,16 @@
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import javax.xml.crypto.Data;
 
 import com.google.gson.Gson;
 
@@ -49,7 +53,7 @@ public class HttpClient {
 		return data;
 		
 	}
-	public static String doPostMethod(String u,Gson content){
+	public static String doPostMethod(String u,String content){
 		String data = " ";
 		try {
 			url = new URL(u);
@@ -59,9 +63,11 @@ public class HttpClient {
 			connection.setRequestMethod("POST");
 			connection.setChunkedStreamingMode(0);
 			connection.setDoInput(true);
-			connection.setRequestProperty( "Content-Type",  "text/plain"); 
-			OutputStream out = connection.getOutputStream();
-			out.write("simsimsims".getBytes());
+			connection.setRequestProperty( "Content-Type",  "application/json"); 
+			
+			OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream());
+			
+			out.write(content);
 			
 			out.flush();
 			out.close();
@@ -83,11 +89,11 @@ public class HttpClient {
 			
 			
 		} catch (MalformedURLException e) {
-			e.printStackTrace();
+			System.out.print("something was wrong with url");
 		}
 		catch( IOException e)
 		{
-			e.printStackTrace();
+			System.out.print("something was wrong with IO");
 			
 		}
 		
