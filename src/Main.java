@@ -8,15 +8,15 @@ public class Main {
 		//example of how to use the class to do post 
 		Gson json = new Gson();
 
-		User user = new User("gabriel",21);
+		User user = new User("gabrieaaal",22);
 		String jsonParams = json.toJson(user);
 		
 		
-		System.out.println(HttpClient.doPostMethod("http://localhost:8765/users/add",jsonParams));
-		System.out.println("//////////////////////////////////////////////////////////////////////");
-		System.out.println(HttpClient.doGetMethod("http://terceiroseti.compjunior.com.br/api/palestrante"));
+		Gson userJson = new Gson();
+		User user2 = userJson.fromJson(HttpClient.doPostMethod("http://localhost:8765/users/add",jsonParams),User.class);
 		
-		
+		System.out.println(user2.getNome());
+		System.out.println(user2.getIdade());
 	}
 
 }
