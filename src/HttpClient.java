@@ -8,6 +8,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import com.google.gson.Gson;
+
 public class HttpClient {
 	
 	public static URL url;
@@ -47,8 +49,8 @@ public class HttpClient {
 		return data;
 		
 	}
-	public static String doPostMethod(String u){
-		
+	public static String doPostMethod(String u,Gson content){
+		String data = " ";
 		try {
 			url = new URL(u);
 			connection = (HttpURLConnection)url.openConnection();
@@ -57,9 +59,27 @@ public class HttpClient {
 			connection.setRequestMethod("POST");
 			connection.setChunkedStreamingMode(0);
 			connection.setDoInput(true);
-			connection.setRequestProperty("Content-type","application/json");
+			connection.setRequestProperty( "Content-Type",  "text/plain"); 
 			OutputStream out = connection.getOutputStream();
+			out.write("simsimsims".getBytes());
 			
+			out.flush();
+			out.close();
+			
+			InputStream stream = connection.getInputStream();
+			
+			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+			
+			StringBuffer buffer = new StringBuffer();
+			String line = " ";
+		
+			while((line = reader.readLine()) != null){
+				buffer.append(line);
+				
+			}
+			data = buffer.toString();
+			reader.close();
+			connection.disconnect();
 			
 			
 		} catch (MalformedURLException e) {
@@ -71,12 +91,7 @@ public class HttpClient {
 			
 		}
 		
-		
-		
-		
-		
-		
-		return " ";
+		return data;
 	}
 	
 	
